@@ -1,42 +1,42 @@
-def mostrar_menu():
+def mostrar_menu_principal():
     print("                           ")
     print("Inicio del programa        ")
     print("╔═════════════════════════╗")
     print("║      Bienvenido a       ║")
     print("║    Biblioteca IFTS24    ║")
     print("╠═════════════════════════╣")
-    print("║ 1. Opción 1             ║")
-    print("║ 2. Opción 2             ║")
-    print("║ 3. Opción 3             ║")
+    print("║ 1. GestionClientes      ║")
+    print("║ 2. GestionLibros        ║")
+    print("║ 3. GestionPrestamos     ║")
     print("║ 4. Salir                ║")
     print("╚═════════════════════════╝")
     print("                           ")
 
-def opcion1():
-    print("                            ")
-    print("Has seleccionado la opción 1")
-    print("Fin del programa            ")
-    print("                            ")
+def mostrar_menu_clientes():
+    print("                           ")
+    print("╔═════════════════════════╗")
+    print("║     Gestion Clientes    ║")
+    print("║                         ║")
+    print("╠═════════════════════════╣")
+    print("║ 1. Alta Cliente         ║")
+    print("║ 2. Baja Cliente         ║")
+    print("║ 3. Consultar Estado     ║")
+    print("║ 4. Actualizar Datos     ║")
+    print("║ 7. Salir                ║")
+    print("╚═════════════════════════╝")
+    print("                           ")
 
-def opcion2():
-    print("                            ")
-    print("Has seleccionado la opción 2")
-    print("Fin del programa            ")
-    print("                            ")
+def mostrar_menu_libros():
+    print(" Has seleccionado la opción: mostrar_menu_libros")
+ 
+def mostrar_menu_prestamos():
+     print(" Has seleccionado la opción: mostrar_menu_prestamos")
 
-def opcion3():
-    print("                            ")
-    print("Has seleccionado la opción 3")
-    print("Fin del programa            ")
-    print("                            ")
-
-def opcion4():
+def Salir():
     print("                       ")
-    print("Hasta luego!           ")
-    print("Fin del programa       ")
+    print("      Hasta luego!     ")
     print("                       ")
 
-# Función para mostrar un mensaje de error
 def mostrar_mensaje_error():
     print("                                        ")
     print("╔══════════════════════════════════════╗")
@@ -54,3 +54,6 @@ def mensaje_dato_no_encontrado():
     print("║         Esa opcion no existe         ║")
     print("╚══════════════════════════════════════╝")
     print("                                        ")
+
+
+

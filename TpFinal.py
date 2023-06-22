@@ -1,6 +1,7 @@
-test = hola
+from modulos.menu_opciones import mostrar_menu_principal, mostrar_menu_clientes, mostrar_menu_libros, mostrar_menu_prestamos, Salir, mostrar_mensaje_error, mensaje_dato_no_encontrado
 
-from modulos.menu_funciones import mostrar_menu, opcion1, opcion2, opcion3, opcion4, mostrar_mensaje_error, mensaje_dato_no_encontrado
+hola = ""
+test = hola
 
 estado = True
 estado_menu = True
@@ -8,7 +9,7 @@ estado_menu = True
 while estado:
 
     if estado_menu:
-        mostrar_menu()
+        mostrar_menu_principal()
         estado_menu = False
     
     try:
@@ -18,10 +19,10 @@ while estado:
            mostrar_mensaje_error()
     else:
         opciones = {
-            1: opcion1,
-            2: opcion2,
-            3: opcion3,
-            4: opcion4
+            1: mostrar_menu_clientes,
+            2: mostrar_menu_libros,
+            3: mostrar_menu_prestamos,
+            4: Salir
         }
 
         if opcion in opciones:
@@ -31,7 +32,7 @@ while estado:
                 estado_menu = True
             else:
                 estado = True
-                estado_menu = True
+                estado_menu = False
         else:
             mensaje_dato_no_encontrado()
             estado = True
