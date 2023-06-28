@@ -1,8 +1,5 @@
 from modulos.menu_opciones import mostrar_menu_principal, mostrar_menu_clientes, mostrar_menu_libros, mostrar_menu_prestamos, Salir, mostrar_mensaje_error, mensaje_dato_no_encontrado
 
-#hola = ""
-#test = hola
-
 estado = True
 estado_menu = True
 

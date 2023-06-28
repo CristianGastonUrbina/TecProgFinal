@@ -1,0 +1,1 @@
+ISBN: 12345 | Titulo: un titulo | Autor: ESTAAAAA | Estado: l | DNI: 0
