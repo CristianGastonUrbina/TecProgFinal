@@ -1,3 +1,7 @@
+# Alta de Libro.
+# Consultar un libro/película.
+# Modificar Libro.
+# Eliminar Libro.
 
 def buscar_libro(ISBN):
     with open('libros.txt', "r+") as archivo:
@@ -9,14 +13,17 @@ def buscar_libro(ISBN):
             if libro_ISBN == ISBN:
                 return libro, i
 
+
 def alta_libro(ISBN, titulo, autor, estado, DNI=0):
     resultado = buscar_libro(ISBN)
     if not resultado:
         with open('libros.txt', 'a') as libros:
             libros.write(
                 f"ISBN: {ISBN} | Titulo: {titulo} | Autor: {autor} | Estado: {estado} | DNI: {DNI}\n")
+        print(f"libro ISBN: {ISBN} | Titulo: {titulo} | Autor: {autor} | Estado: {estado} | DNI: {DNI} agregado con exito")
     else:
         print(f"ya existe un libro con ese ISBN: {resultado[0]} ")
+
 
 def baja_libro(ISBN):
     resultado = buscar_libro(ISBN)
@@ -28,7 +35,8 @@ def baja_libro(ISBN):
             archivo.seek(0)
             archivo.writelines(libros)
             archivo.truncate()
-    return   # indicar la falta de cliente válido
+    else:
+        print(f" No se encontro ningun libro con ISBN {ISBN}, no se puede eliminar ")
 
 def modificar_libro(ISBN, campo, valor):
     resultado = buscar_libro(ISBN)
@@ -47,4 +55,11 @@ def modificar_libro(ISBN, campo, valor):
             archivo.seek(0)
             archivo.writelines(libros)
             archivo.truncate()
-        return   # indicar la falta de cliente válido
+    else:
+        print(f" No se encontro ningun libro con ISBN {ISBN}, no se pudo modificar ")
+    
+def consultar_libro(ISBN):
+    resultado = buscar_libro(ISBN)
+    if resultado:
+        libro, indice = resultado
+    print(f"El libro buscado es {libro}")
