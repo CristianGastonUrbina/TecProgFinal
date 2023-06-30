@@ -27,42 +27,52 @@ def alta_cliente(dni, nombre, apellido, telefono, direccion):
     return cliente
 
 
-
-
 def baja_cliente(dni):
     clientes_encontrados = []
 
-    with open('Clientes.txt', 'r') as archivo:
+    with open('clientes.txt', 'r') as archivo:
         lineas = archivo.readlines()
 
     for linea in lineas:
-        cliente = linea.strip().split(', ')
+        cliente = linea.strip().split(' -> ')[1].split(', ')
+
+        if len(cliente) >= 8:
+            estado = cliente[7]
+        else:
+            estado = ''
+
         cliente_dict = {
-            'DNI': int(cliente[0].split(' -> ')[1]),
+            'DNI': int(cliente[0]),
             'Nombre': cliente[1],
             'Apellido': cliente[2],
             'Telefono': cliente[3],
             'Direccion': cliente[4],
             'Fecha_Alta': cliente[5],
             'ISBN_Libro': cliente[6],
-            'Estado': cliente[7].split(' ')[1]
+            'Estado': estado
         }
 
-        if cliente_dict['DNI'] == dni and cliente_dict['Estado'] == 'Activo' and cliente_dict['ISBN_Libro'] == '':
+        if (
+            cliente_dict['DNI'] == dni and
+            cliente_dict['Estado'] == 'Activo' and
+            cliente_dict['ISBN_Libro'] == ''
+        ):
             cliente_dict['Fecha_Baja'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
             cliente_dict['Estado'] = 'Inactivo'
             clientes_encontrados.append(cliente_dict)
 
     if clientes_encontrados:
-        with open('Clientes.txt', 'w') as archivo:
+        with open('clientes.txt', 'w') as archivo:
             for linea in lineas:
-                cliente = linea.strip().split(', ')
-                cliente_dni = int(cliente[0].split(' -> ')[1])
+                cliente = linea.strip().split(' -> ')[1].split(', ')
+                cliente_dni = int(cliente[0])
                 if cliente_dni != dni:
                     archivo.write(linea)
 
             for cliente in clientes_encontrados:
-                archivo.write(f"Baja de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, Inactivo \n")
+                archivo.write(
+                    f"Baja de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, Inactivo\n"
+                )
 
         print("El cliente ha sido dado de baja exitosamente.")
         return clientes_encontrados[0]
@@ -70,6 +80,7 @@ def baja_cliente(dni):
     print("No se encontró el cliente o el cliente tiene préstamos activos.")
     return None
 
+baja_cliente(39931865)
 
 def consultar_estado_cliente(dni):
     with open('Clientes.txt', 'r') as archivo:

@@ -1,6 +1,1 @@
-Alta de cliente -> 39931865, Damian, Fortunesky, 11233423456, sarasa 1234, 2023-06-30 15:03:40.161863, , Activo 
-Alta de cliente -> 14234543, Nelson, Ramirez, 1124342343, sarasa 234, 2023-06-30 15:12:26.869098, , Activo 
-Alta de cliente -> 1234565423, sisisi, nonono, 111111111, yernas 2, 2023-06-30 15:14:21.860483, , Activo 
-Alta de cliente -> 39931854, damian, restore, 1123435612, rindamos 1, 2023-06-30 15:15:14.915455, , Activo 
-Alta de cliente -> 39931865, Damian, Fulanito, 12345678, sawerds 1234, 2023-06-30 15:39:32.328763, , Activo 
-Alta de cliente -> 39931856, SIEMPRE, SIMPRE, 1123456789, sarsa 123, 2023-06-30 15:49:43.419432, , Activo 
+Baja de cliente -> 39931865, Damian, Fortunesky, 1123456789, sarsa 123, 2023-06-30 16:27:54.448314, 2023-06-30 16:28:08.864150, Inactivo
