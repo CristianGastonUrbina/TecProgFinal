@@ -1,1 +1,2 @@
 Baja de cliente -> 39931865, Damian, Fortunesky, 1123456789, sarsa 123, 2023-06-30 16:27:54.448314, 2023-06-30 16:28:08.864150, Inactivo
+Alta de cliente -> 39931865, Damian, Fortunesky, 112334567, sarasa 123, 2023-06-30 16:39:24.226370, , Activo 

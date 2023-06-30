@@ -80,28 +80,38 @@ def baja_cliente(dni):
     print("No se encontró el cliente o el cliente tiene préstamos activos.")
     return None
 
-baja_cliente(39931865)
+#baja_cliente(39931865)
 
 def consultar_estado_cliente(dni):
-    with open('Clientes.txt', 'r') as archivo:
+    ruta = 'E:\\Escritorio\\tec-programacion\\TecProgFinal\\modulos\\Clientes.txt'
+
+    with open(ruta, 'r') as archivo:
         lineas = archivo.readlines()
 
     for linea in lineas:
         cliente = linea.strip().split(', ')
+        
+       
         cliente_dict = {
-            'DNI': int(cliente[0]),
+            'DNI': cliente[0][cliente[0].rfind('>') + 1:].strip(),
             'Nombre': cliente[1],
             'Apellido': cliente[2],
             'Telefono': cliente[3],
             'Direccion': cliente[4],
             'Fecha_Alta': datetime.strptime(cliente[5], '%Y-%m-%d %H:%M:%S.%f'),
-            'Estado': cliente[7],
+            'Estado': cliente[7]
         }
-        if cliente_dict['DNI'] == dni:
-            return cliente_dict['estado_menu_principal']
 
-    return 'Cliente no encontrado'
+        if cliente_dict['DNI'] == str(dni):
+            ultimo_registro = cliente_dict['Estado']  
+            return f"Su estado como cliente es: {ultimo_registro}"       
+        
+    return print('Cliente no encontrado')
 
+#print(consultar_estado_cliente(39931865))
+
+
+"""
 
 def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
     with open('Clientes.txt', 'r') as archivo:
@@ -306,3 +316,7 @@ def programa():
                     estado_submenu = True
 
 programa()
+
+
+
+"""
