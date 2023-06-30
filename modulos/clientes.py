@@ -1,16 +1,14 @@
-from datetime import datetime
 
-# python clientes.py
+
 # alta_cliente
 # baja_cliente
-# python clientes.py
+# consultar estado
+# modificar datos
 
 
-# Función para dar de alta a un cliente
+### ------------------------------------------------------------------------------- Funcionalidades ----------------------------------------------------------------------------------- ###
+from datetime import datetime
 def alta_cliente(dni, nombre, apellido, telefono, direccion):
-
-    # Lista para almacenar los clientes
-    clientes = []
 
     cliente = {
         'DNI': dni,
@@ -19,22 +17,16 @@ def alta_cliente(dni, nombre, apellido, telefono, direccion):
         'Telefono': telefono,
         'Direccion': direccion,
         'Fecha_Alta': datetime.now(),
-        'Estado': 'Activo',
-        'ISBN_Libro': ''
+        'ISBN_Libro': '',
+        'Estado': 'Activo'
     }
-    clientes.append(cliente)
-
     # Registrar el alta en el archivo
     with open('Clientes.txt', 'a') as archivo:
-        archivo.write(f"Alta de cliente -> DNI: {dni} | Nombre: {nombre} | Apellido: {apellido} | Tel: {telefono} | Direccion: {direccion} | Fecha_Alta: {cliente['Fecha_Alta']} | Estado: Activo,\n")
+        archivo.write(f"Alta de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['ISBN_Libro']}, Activo \n")
 
     return cliente
 
-#print(alta_cliente(39874651, 'NombreUsuario2', 'ApellidoUsuario2', '1124028831', 'Sarmiento 1526'))
-#print(clientes)
 
-
-# Baja con manejo de archivos
 def baja_cliente(dni):
     clientes_encontrados = []
 
@@ -42,39 +34,41 @@ def baja_cliente(dni):
         lineas = archivo.readlines()
 
     for linea in lineas:
-        cliente = linea.strip().split(' | ')
+        cliente = linea.strip().split(', ')
         cliente_dict = {
-            'DNI': int(cliente[0].split(': ')[1]),
-            'Nombre': cliente[1].split(': ')[1],
-            'Apellido': cliente[2].split(': ')[1],
-            'Telefono': cliente[3].split(': ')[1],
-            'Direccion': cliente[4].split(': ')[1],
-            'Fecha_Alta': datetime.strptime(cliente[5].split(': ')[1], '%Y-%m-%d %H:%M:%S.%f'), # '%Y-%m-%d %H:%M:%S.%f' -> los elementos están separados por guiones y espacios para coincidir con el formato de la cadena de texto de la fecha y hora que se desea convertir.
-            'Estado': cliente[6].split(': ')[1],
+            'DNI': int(cliente[0].split(' -> ')[1]),
+            'Nombre': cliente[1],
+            'Apellido': cliente[2],
+            'Telefono': cliente[3],
+            'Direccion': cliente[4],
+            'Fecha_Alta': cliente[5],
+            'ISBN_Libro': cliente[6],
+            'Estado': cliente[7].split(' ')[1]
         }
+
         if cliente_dict['DNI'] == dni and cliente_dict['Estado'] == 'Activo' and cliente_dict['ISBN_Libro'] == '':
-            cliente_dict['Fecha_Baja'] = datetime.now()
+            cliente_dict['Fecha_Baja'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
             cliente_dict['Estado'] = 'Inactivo'
             clientes_encontrados.append(cliente_dict)
 
     if clientes_encontrados:
         with open('Clientes.txt', 'w') as archivo:
             for linea in lineas:
-                cliente = linea.strip().split(' | ')
-                cliente_dni = int(cliente[0].split(': ')[1])
+                cliente = linea.strip().split(', ')
+                cliente_dni = int(cliente[0].split(' -> ')[1])
                 if cliente_dni != dni:
                     archivo.write(linea)
 
             for cliente in clientes_encontrados:
-                archivo.write(f"DNI: {cliente['DNI']} | Nombre: {cliente['Nombre']} | Apellido: {cliente['Apellido']} | Tel: {cliente['Telefono']} | Direccion: {cliente['Direccion']} | Fecha_Alta: {cliente['Fecha_Alta']} | Fecha_Baja: {cliente['Fecha_Baja']} | Estado: Inactivo\n")
+                archivo.write(f"Baja de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, Inactivo \n")
 
         print("El cliente ha sido dado de baja exitosamente.")
         return clientes_encontrados[0]
 
     print("No se encontró el cliente o el cliente tiene préstamos activos.")
-    return None  # indicar la falta de cliente válido
+    return None
 
-# Consultar estado con manejo de archivo
+
 def consultar_estado_cliente(dni):
     with open('Clientes.txt', 'r') as archivo:
         lineas = archivo.readlines()
@@ -88,56 +82,29 @@ def consultar_estado_cliente(dni):
             'Telefono': cliente[3].split(': ')[1],
             'Direccion': cliente[4].split(': ')[1],
             'Fecha_Alta': datetime.strptime(cliente[5].split(': ')[1], '%Y-%m-%d %H:%M:%S.%f'),
-            'Estado': cliente[6].split(': ')[1],
+            'estado_menu_principal': cliente[6].split(': ')[1],
         }
         if cliente_dict['DNI'] == dni:
-            return cliente_dict['Estado']
+            return cliente_dict['estado']
 
     return 'Cliente no encontrado'
 
-#print(consultar_estado_cliente(39874657))
 
-
-
-
-"""MENU PARA EJECUTAR MODULO - SIMULACION APP FINAL"""
-
-def mostrar_menu():
-    print("Menú:")
-    print("1. Alta cliente")
-    print("2. Baja cliente")
-    print("3. Consultar Estado cliente")
-
-def ejecutar_opcion(opcion):
-    if opcion == 1:
-        alta_cliente(39874656, 'NombreUsuario9', 'ApellidoUsuario5', '11240288323', 'Sarmiento 15236')
-        print("¡Cliente dado de alta!")
-    if opcion == 2:
-        baja_cliente(39874656)
-    if opcion == 3:
-        consultar_estado_cliente(39874656)
-
-
-mostrar_menu()
-opcion = int(input("Seleccione una opción: "))
-ejecutar_opcion(opcion)
-
-
-
-
-
-
-
-
-
-
-
-### ------------------------- ANTERIOR - SIN MANEJOR DE ARHIVOS ----------------------------- ###
-
-
-# Función para modificar el teléfono o dirección de un cliente
 def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
-    for cliente in clientes:
+    with open('clientes.txt', 'r') as archivo:
+        lineas = archivo.readlines()
+
+    encontrado = False
+    for i, linea in enumerate(lineas):
+        datos = linea.strip().split('|')
+        cliente = {
+            'DNI': datos[0].strip(),
+            'Nombre': datos[1].strip(),
+            'Apellido': datos[2].strip(),
+            'Telefono': datos[3].strip(),
+            'Direccion': datos[4].strip()
+        }
+
         if cliente['DNI'] == dni:
             if nombre:
                 cliente['Nombre'] = nombre
@@ -148,43 +115,165 @@ def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
             if direccion:
                 cliente['Direccion'] = direccion
 
-            with open('Clientes.txt', 'a') as archivo:
-                archivo.write(f"Actualización de cliente -> DNI: {cliente['DNI']} | Nombre: {cliente['Nombre']} | Apellido: {cliente['Apellido']} | Tel: {cliente['Telefono']} | Direccion: {cliente['Direccion']} | Fecha_Alta: {datetime.now()} | Estado: Activo,\n")
-                
-            return 'Datos actualizados'
-    return 'Cliente no encontrado'
+            lineas[i] = f"{cliente['DNI']} | {cliente['Nombre']} | {cliente['Apellido']} | {cliente['Telefono']} | {cliente['Direccion']}"
+
+            encontrado = True
+            break
+
+    if encontrado:
+        with open('clientes.txt', 'w') as archivo:
+            archivo.writelines(lineas)
+        
+        registro_actualizacion = f"Actualización de cliente -> DNI: {cliente['DNI']} | Nombre: {cliente['Nombre']} | Apellido: {cliente['Apellido']} | Tel: {cliente['Telefono']} | Dirección: {cliente['Direccion']} | Fecha_Alta: {datetime.now()} | estado_menu_principal: Activo\n"
+        with open('Clientes.txt', 'a') as archivo:
+            archivo.write(registro_actualizacion)
+
+        return 'Datos actualizados'
+    else:
+        return 'Cliente no encontrado'
 
 
+###  ------------------------------------------------------ Funciones para menu modulo clientes ------------------------------------------------------ ###
 
 
+def pedir_datos_cliente():
+    dni = input("Ingrese el DNI: ")
+    nombre = input("Ingrese el nombre: ")
+    apellido = input("Ingrese el apellido: ")
+    telefono = input("Ingrese el teléfono: ")
+    direccion = input("Ingrese la dirección: ")
 
-# Función para consultar el estado de un cliente
-""" def consultar_estado_cliente(dni):
-    for cliente in clientes:
-        if cliente['DNI'] == dni:
-            return cliente['Estado']
-    return 'Cliente no encontrado' """
+    # Llamar a la función "alt_cliente" con los datos ingresados
+    alta_cliente(dni, nombre, apellido, telefono, direccion)
 
-# Función para dar de baja un cliente
-"""def baja_cliente(dni):
-    for cliente in clientes:
-        if cliente['DNI'] == dni and cliente['ISBN_Libro'] == '':
-            cliente['Fecha_baja'] = datetime.now()
-            cliente['Estado'] = 'Inactivo'
 
-            with open('Clientes.txt', 'a') as archivo:
-                archivo.write(f"Baja de cliente -> DNI: {cliente['DNI']} | Nombre: {cliente['Nombre']} | Apellido: {cliente['Apellido']} | Tel: {cliente['Telefono']} | Direccion: {cliente['Direccion']} | Fecha_Alta: {cliente['Fecha_alta']} | Fecha_Baja: {cliente['Fecha_baja']} | Estado: Inactivo,\n")
-
-            print("El cliente ha sido dado de baja exitosamente.")
-            return cliente
+def baja_datos_cliente():
+    dni = input("Ingrese el DNI: ")
     
-    print("No se encontró el cliente o el cliente tiene préstamos activos.")
-    return None"""  # indicar la falta de cliente válido
+    # Llamar a la función "baja_cliente" con los datos ingresados
+    baja_cliente(dni)
 
 
+def consultar_estado_cliente():
+    dni = input("Ingrese el DNI: ")
+    
+    # Llamar a la función con los datos ingresados
+    consultar_estado_cliente(dni)
+
+def modificar_datos_cliente():
+    dni = input("Ingrese el DNI: ")
+    nombre = input("Ingrese el nombre: ")
+    apellido = input("Ingrese el apellido: ")
+    telefono = input("Ingrese el teléfono: ")
+    direccion = input("Ingrese la dirección: ")
+
+    modificar_datos_cliente(dni, nombre, apellido, telefono, direccion)
+
+###  ---------------------------------------------------------- ALERTAS ---------------------------------------------------------- ###
+
+def mostrar_menu_principal():
+    print("                            ")
+    print("╔══════════════════════════╗")
+    print("║      Bienvenido a        ║")
+    print("║    Biblioteca IFTS24     ║")
+    print("╠═════════════════════════ ╣")
+    print("║ 1. Gestion Clientes      ║")
+    print("║ 2. Gestion Libros        ║")
+    print("║ 3. Gestion Prestamos     ║")
+    print("║ 4. Salir                 ║")
+    print("╚══════════════════════════╝")
+    print("                            ")
+
+def submenu_clientes():
+    print("                                       ")
+    print("╔═════════════════════════════════════╗")
+    print("║           Gestion Clientes          ║")
+    print("║                                     ║")
+    print("╠═════════════════════════════════════╣")
+    print("║ 1. Alta Cliente                     ║")
+    print("║ 2. Baja Cliente                     ║")
+    print("║ 3. Consultar estado del cliente     ║")
+    print("║ 4. Actualizar Datos                 ║")
+    print("║ 7. Salir                            ║")
+    print("╚═════════════════════════════════════╝")
+    print("                                       ")
+
+def mostrar_mensaje_error():
+    print("                                        ")
+    print("╔══════════════════════════════════════╗")
+    print("║      Error al ingresar dato !        ║")
+    print("╠══════════════════════════════════════╣")
+    print("║ Debe ingresar un Nº de opción válido ║")
+    print("╚══════════════════════════════════════╝")
+    print("                                        ")
+
+def mensaje_dato_no_encontrado():
+    print("                                        ")
+    print("╔══════════════════════════════════════╗")
+    print("║         Error de busqueda !          ║")
+    print("╠══════════════════════════════════════╣")
+    print("║         Esa opcion no existe         ║")
+    print("╚══════════════════════════════════════╝")
+    print("                                        ")
+
+def Salir():
+    print("                       ")
+    print("      Hasta luego!     ")
+    print("                       ")
 
 
+### ---------------------------------------------------------------------------------- APP ENTRADA ---------------------------------------------------------------------------------- ###
 
+def programa():
+    estado_menu_principal = True
 
+    while estado_menu_principal:
 
+        if estado_menu_principal:
+            mostrar_menu_principal()
+            estado_menu_principal_menu = False
+        
+        try:
+            opcion = int(input("Elige el numero de opción deseada: "))
+            estado_menu_principal = False
+        except ValueError:
+            mostrar_mensaje_error()
+        else:
+            opciones = {
+                1: submenu_clientes,
+                2: 1,
+                3: 2,
+                4: Salir            
+            }
 
+            if opcion in opciones:
+                opciones[opcion]()                
+            else:
+                mensaje_dato_no_encontrado()
+                estado_menu_principal = True
+        
+        # Aca comienza la gestion del submnu
+        estado_submenu = True
+
+        while estado_submenu:
+            try:
+                opcion_submenu_clientes = int(input("Elige el numero de opción deseada: "))
+                estado_submenu = False
+            except ValueError:
+                mostrar_mensaje_error()
+            else:
+                ops_clientes = {
+                    1: pedir_datos_cliente,
+                    2: baja_datos_cliente,
+                    3: consultar_estado_cliente,
+                    4: modificar_datos_cliente,
+                    5: Salir
+                }
+
+                if opcion in ops_clientes:
+                    ops_clientes[opcion]()                
+                else:
+                    mensaje_dato_no_encontrado()
+                    estado_submenu = True
+
+programa()

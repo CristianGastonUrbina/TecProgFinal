@@ -2,7 +2,7 @@
 # Consultar un libro/película.
 # Modificar Libro.
 # Eliminar Libro.
-
+# python TpFinal.py
 
 def buscar_libro(ISBN):
     with open('libros.txt', "r+") as archivo:

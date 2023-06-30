@@ -1,4 +1,2 @@
-Alta de cliente -> DNI: 39874650 | Nombre: NombreUsuario | Apellido: ApellidoUsuario | Tel: 1124028836 | Direccion: Sarmiento 1426 | Fecha_Alta: 2023-06-27 18:23:16.568498 | Estado: Activo,
-Alta de cliente -> DNI: 39874651 | Nombre: NombreUsuario2 | Apellido: ApellidoUsuario2 | Tel: 1124028831 | Direccion: Sarmiento 1526 | Fecha_Alta: 2023-06-29 20:58:54.743752 | Estado: Activo,
-Alta de cliente -> DNI: 39874656 | Nombre: NombreUsuario9 | Apellido: ApellidoUsuario5 | Tel: 11240288323 | Direccion: Sarmiento 15236 | Fecha_Alta: 2023-06-29 21:11:32.852585 | Estado: Activo,
-Alta de cliente -> DNI: 39874656 | Nombre: NombreUsuario9 | Apellido: ApellidoUsuario5 | Tel: 11240288323 | Direccion: Sarmiento 15236 | Fecha_Alta: 2023-06-29 21:17:33.417615 | Estado: Activo,
+Alta de cliente -> 31445678, Cristian, Toloza, 1123245672, sarmiento 1234, 2023-06-30 00:12:25.540660, , Activo 
+Alta de cliente -> 31445678, Cristian, Toloza, 1123245672, sarmiento 1234, 2023-06-30 00:15:25.754959, , Activo 

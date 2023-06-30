@@ -1,5 +1,7 @@
 from modulos.menu_opciones import mostrar_menu_principal, mostrar_menu_clientes, mostrar_menu_libros, mostrar_menu_prestamos, Salir, mostrar_mensaje_error, mensaje_dato_no_encontrado
 
+# python TpFinal.py
+
 estado = True
 estado_menu = True
 
@@ -19,7 +21,7 @@ while estado:
             1: mostrar_menu_clientes,
             2: mostrar_menu_libros,
             3: mostrar_menu_prestamos,
-            4: Salir
+            4: Salir            
         }
 
         if opcion in opciones:
