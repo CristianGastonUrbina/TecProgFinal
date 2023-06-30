@@ -1,4 +1,4 @@
-
+from datetime import datetime
 
 # alta_cliente
 # baja_cliente
@@ -7,7 +7,6 @@
 
 
 ### ------------------------------------------------------------------------------- Funcionalidades ----------------------------------------------------------------------------------- ###
-from datetime import datetime
 def alta_cliente(dni, nombre, apellido, telefono, direccion):
 
     cliente = {
@@ -24,7 +23,10 @@ def alta_cliente(dni, nombre, apellido, telefono, direccion):
     with open('Clientes.txt', 'a') as archivo:
         archivo.write(f"Alta de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['ISBN_Libro']}, Activo \n")
 
+    print("\nEl cliente ha sido dado de alta exitosamente")
     return cliente
+
+
 
 
 def baja_cliente(dni):
@@ -74,35 +76,35 @@ def consultar_estado_cliente(dni):
         lineas = archivo.readlines()
 
     for linea in lineas:
-        cliente = linea.strip().split(' | ')
+        cliente = linea.strip().split(', ')
         cliente_dict = {
-            'DNI': int(cliente[0].split(': ')[1]),
-            'Nombre': cliente[1].split(': ')[1],
-            'Apellido': cliente[2].split(': ')[1],
-            'Telefono': cliente[3].split(': ')[1],
-            'Direccion': cliente[4].split(': ')[1],
-            'Fecha_Alta': datetime.strptime(cliente[5].split(': ')[1], '%Y-%m-%d %H:%M:%S.%f'),
-            'estado_menu_principal': cliente[6].split(': ')[1],
+            'DNI': int(cliente[0]),
+            'Nombre': cliente[1],
+            'Apellido': cliente[2],
+            'Telefono': cliente[3],
+            'Direccion': cliente[4],
+            'Fecha_Alta': datetime.strptime(cliente[5], '%Y-%m-%d %H:%M:%S.%f'),
+            'Estado': cliente[7],
         }
         if cliente_dict['DNI'] == dni:
-            return cliente_dict['estado']
+            return cliente_dict['estado_menu_principal']
 
     return 'Cliente no encontrado'
 
 
 def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
-    with open('clientes.txt', 'r') as archivo:
+    with open('Clientes.txt', 'r') as archivo:
         lineas = archivo.readlines()
 
     encontrado = False
     for i, linea in enumerate(lineas):
-        datos = linea.strip().split('|')
+        datos = linea.strip().split(', ')
         cliente = {
-            'DNI': datos[0].strip(),
-            'Nombre': datos[1].strip(),
-            'Apellido': datos[2].strip(),
-            'Telefono': datos[3].strip(),
-            'Direccion': datos[4].strip()
+            'DNI': datos[0],
+            'Nombre': datos[1],
+            'Apellido': datos[2],
+            'Telefono': datos[3],
+            'Direccion': datos[4]
         }
 
         if cliente['DNI'] == dni:
@@ -115,16 +117,16 @@ def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
             if direccion:
                 cliente['Direccion'] = direccion
 
-            lineas[i] = f"{cliente['DNI']} | {cliente['Nombre']} | {cliente['Apellido']} | {cliente['Telefono']} | {cliente['Direccion']}"
+            lineas[i] = f"{cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {datos[5]}, {datos[6]}, {datos[7]}"
 
             encontrado = True
             break
 
     if encontrado:
-        with open('clientes.txt', 'w') as archivo:
+        with open('Clientes.txt', 'w') as archivo:
             archivo.writelines(lineas)
         
-        registro_actualizacion = f"Actualización de cliente -> DNI: {cliente['DNI']} | Nombre: {cliente['Nombre']} | Apellido: {cliente['Apellido']} | Tel: {cliente['Telefono']} | Dirección: {cliente['Direccion']} | Fecha_Alta: {datetime.now()} | estado_menu_principal: Activo\n"
+        registro_actualizacion = f"Actualización de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {datetime.now()}, {datos[6]}, {datos[7]}"
         with open('Clientes.txt', 'a') as archivo:
             archivo.write(registro_actualizacion)
 
@@ -137,14 +139,29 @@ def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
 
 
 def pedir_datos_cliente():
-    dni = input("Ingrese el DNI: ")
-    nombre = input("Ingrese el nombre: ")
-    apellido = input("Ingrese el apellido: ")
-    telefono = input("Ingrese el teléfono: ")
-    direccion = input("Ingrese la dirección: ")
+    flag_dni = True
+    while flag_dni:
+        try:
+            dni = int(input("Ingrese el DNI: "))
+            nombre = input("Ingrese el nombre: ")
+            apellido = input("Ingrese el apellido: ")
 
-    # Llamar a la función "alt_cliente" con los datos ingresados
-    alta_cliente(dni, nombre, apellido, telefono, direccion)
+            flag_telefono = True
+            while flag_telefono:
+                try:
+                    telefono = int(input("Ingrese el teléfono: "))
+                    flag_telefono = False
+                except ValueError:
+                    print("El teléfono debe ser numérico")
+            
+            direccion = input("Ingrese la dirección: ")
+
+            flag_dni = False
+        except ValueError:
+                print("El DNI debe ser numerico")
+
+    return  alta_cliente(dni, nombre, apellido, telefono, direccion)
+   
 
 
 def baja_datos_cliente():
@@ -166,7 +183,8 @@ def modificar_datos_cliente():
     apellido = input("Ingrese el apellido: ")
     telefono = input("Ingrese el teléfono: ")
     direccion = input("Ingrese la dirección: ")
-
+    
+    # Llamar a la función con los datos ingresados
     modificar_datos_cliente(dni, nombre, apellido, telefono, direccion)
 
 ###  ---------------------------------------------------------- ALERTAS ---------------------------------------------------------- ###
@@ -230,24 +248,24 @@ def programa():
     while estado_menu_principal:
 
         if estado_menu_principal:
-            mostrar_menu_principal()
-            estado_menu_principal_menu = False
-        
+            mostrar_menu_principal()        
         try:
             opcion = int(input("Elige el numero de opción deseada: "))
             estado_menu_principal = False
         except ValueError:
             mostrar_mensaje_error()
-        else:
+        else:           
             opciones = {
                 1: submenu_clientes,
-                2: 1,
-                3: 2,
+                2: "submenu_libros",
+                3: "submenu_prestamos",
                 4: Salir            
             }
 
             if opcion in opciones:
-                opciones[opcion]()                
+                opciones[opcion]()  
+                if opcion == 4:
+                    estado_menu_principal = False
             else:
                 mensaje_dato_no_encontrado()
                 estado_menu_principal = True
