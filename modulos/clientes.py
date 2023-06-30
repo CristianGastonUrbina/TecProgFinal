@@ -1,12 +1,8 @@
 from datetime import datetime
 
-# alta_cliente
-# baja_cliente
-# consultar estado
-# modificar datos
+# ---------------------------------------------------------- FUNCIONES QUE MANEJAN EL MODELO DE DATOS ---------------------------------------------------------- #
 
 
-### ------------------------------------------------------------------------------- Funcionalidades ----------------------------------------------------------------------------------- ###
 def alta_cliente(dni, nombre, apellido, telefono, direccion):
 
     cliente = {
@@ -16,62 +12,63 @@ def alta_cliente(dni, nombre, apellido, telefono, direccion):
         'Telefono': telefono,
         'Direccion': direccion,
         'Fecha_Alta': datetime.now(),
-        'ISBN_Libro': '',
+        'Fecha_Baja': 'NULL',
+        'ISBN_Libro': 'NULL',
         'Estado': 'Activo'
     }
     # Registrar el alta en el archivo
     with open('Clientes.txt', 'a') as archivo:
-        archivo.write(f"Alta de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['ISBN_Libro']}, Activo \n")
+        archivo.write(f"Alta de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, {cliente['ISBN_Libro']}, {cliente['Estado']} \n")
 
     print("\nEl cliente ha sido dado de alta exitosamente")
     return cliente
+
+#alta_cliente(39234543, 'Damian', 'Fortunesky', 1123456789, 'sarasa 123')
 
 
 def baja_cliente(dni):
     clientes_encontrados = []
 
-    with open('clientes.txt', 'r') as archivo:
+    ruta = 'E:\\Escritorio\\tec-programacion\\TecProgFinal\\modulos\\Clientes.txt'
+    with open(ruta, 'r') as archivo:
         lineas = archivo.readlines()
 
     for linea in lineas:
         cliente = linea.strip().split(' -> ')[1].split(', ')
 
-        if len(cliente) >= 8:
-            estado = cliente[7]
-        else:
-            estado = ''
-
         cliente_dict = {
-            'DNI': int(cliente[0]),
+            'DNI': cliente[0],
             'Nombre': cliente[1],
             'Apellido': cliente[2],
             'Telefono': cliente[3],
             'Direccion': cliente[4],
             'Fecha_Alta': cliente[5],
-            'ISBN_Libro': cliente[6],
-            'Estado': estado
+            'Fecha_Baja': cliente[6],
+            'ISBN_Libro': cliente[7],
+            'Estado': cliente[8]
         }
 
         if (
-            cliente_dict['DNI'] == dni and
+            cliente_dict['DNI'] == str(dni) and
             cliente_dict['Estado'] == 'Activo' and
-            cliente_dict['ISBN_Libro'] == ''
+            cliente_dict['ISBN_Libro'] == 'NULL'
         ):
             cliente_dict['Fecha_Baja'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
             cliente_dict['Estado'] = 'Inactivo'
             clientes_encontrados.append(cliente_dict)
 
     if clientes_encontrados:
-        with open('clientes.txt', 'w') as archivo:
+        with open(ruta, 'w') as archivo:
             for linea in lineas:
                 cliente = linea.strip().split(' -> ')[1].split(', ')
-                cliente_dni = int(cliente[0])
-                if cliente_dni != dni:
+                cliente_dni = cliente[0]
+
+                if cliente_dni != str(dni):
                     archivo.write(linea)
 
             for cliente in clientes_encontrados:
                 archivo.write(
-                    f"Baja de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, Inactivo\n"
+                    f"Baja de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, NULL, {cliente['Estado']}\n"
                 )
 
         print("El cliente ha sido dado de baja exitosamente.")
@@ -80,7 +77,8 @@ def baja_cliente(dni):
     print("No se encontró el cliente o el cliente tiene préstamos activos.")
     return None
 
-#baja_cliente(39931865)
+#baja_cliente(39234543)
+
 
 def consultar_estado_cliente(dni):
     ruta = 'E:\\Escritorio\\tec-programacion\\TecProgFinal\\modulos\\Clientes.txt'
@@ -99,7 +97,7 @@ def consultar_estado_cliente(dni):
             'Telefono': cliente[3],
             'Direccion': cliente[4],
             'Fecha_Alta': datetime.strptime(cliente[5], '%Y-%m-%d %H:%M:%S.%f'),
-            'Estado': cliente[7]
+            'Estado': cliente[8]
         }
 
         if cliente_dict['DNI'] == str(dni):
@@ -108,55 +106,63 @@ def consultar_estado_cliente(dni):
         
     return print('Cliente no encontrado')
 
-#print(consultar_estado_cliente(39931865))
+#print(consultar_estado_cliente(39234543))
 
-
-"""
 
 def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
-    with open('Clientes.txt', 'r') as archivo:
+
+    ruta = 'E:\\Escritorio\\tec-programacion\\TecProgFinal\\modulos\\Clientes.txt'
+
+    with open(ruta, 'r') as archivo:
         lineas = archivo.readlines()
 
     encontrado = False
     for i, linea in enumerate(lineas):
         datos = linea.strip().split(', ')
         cliente = {
-            'DNI': datos[0],
+            'DNI': datos[0][datos[0].rfind('>') + 1:].strip(),
             'Nombre': datos[1],
             'Apellido': datos[2],
             'Telefono': datos[3],
-            'Direccion': datos[4]
+            'Direccion': datos[4],
+            'Fecha_Alta': datos[5],
+            'Fecha_Baja': datos[6],
+            'ISBN_Libro': datos[7],
+            'Estado': datos[8]
         }
 
-        if cliente['DNI'] == dni:
+        if cliente['DNI'] == str(dni):
             if nombre:
                 cliente['Nombre'] = nombre
             if apellido:
                 cliente['Apellido'] = apellido
             if telefono:
-                cliente['Telefono'] = telefono
+                cliente['Telefono'] = str(telefono)
             if direccion:
                 cliente['Direccion'] = direccion
 
-            lineas[i] = f"{cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {datos[5]}, {datos[6]}, {datos[7]}"
+            cliente['Fecha_Alta'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+
+            lineas[i] = f"{cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, {cliente['ISBN_Libro']}, {cliente['Estado']}\n"
 
             encontrado = True
             break
 
     if encontrado:
-        with open('Clientes.txt', 'w') as archivo:
-            archivo.writelines(lineas)
-        
-        registro_actualizacion = f"Actualización de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {datetime.now()}, {datos[6]}, {datos[7]}"
-        with open('Clientes.txt', 'a') as archivo:
+
+        registro_actualizacion = f"Actualizacion de cliente -> {cliente['DNI']}, {cliente['Nombre']}, {cliente['Apellido']}, {cliente['Telefono']}, {cliente['Direccion']}, {cliente['Fecha_Alta']}, {cliente['Fecha_Baja']}, {cliente['ISBN_Libro']}, {cliente['Estado']}\n"
+        with open(ruta, 'a') as archivo:
             archivo.write(registro_actualizacion)
 
         return 'Datos actualizados'
     else:
         return 'Cliente no encontrado'
 
+#print(modificar_datos_cliente(39234543, "Damian", "Fortunesky", 1123456789, "nuevaDireccion2"))
 
-###  ------------------------------------------------------ Funciones para menu modulo clientes ------------------------------------------------------ ###
+
+
+# -------------------------------------------- FUNCIONES QUE MANEJAN LAS SOLICITUDES DE LOS USUARIOS, LOS CONTROLADORES -------------------------------------------- #
 
 
 def pedir_datos_cliente():
@@ -208,7 +214,10 @@ def modificar_datos_cliente():
     # Llamar a la función con los datos ingresados
     modificar_datos_cliente(dni, nombre, apellido, telefono, direccion)
 
-###  ---------------------------------------------------------- ALERTAS ---------------------------------------------------------- ###
+
+
+
+# ------------------------------------------------------------------- ALERTAS  DE LAS VISTAS ------------------------------------------------------------------- #
 
 def mostrar_menu_principal():
     print("                            ")
@@ -261,7 +270,7 @@ def Salir():
     print("                       ")
 
 
-### ---------------------------------------------------------------------------------- APP ENTRADA ---------------------------------------------------------------------------------- ###
+# ---------------------------------------------------- FUNCIONES QUE MANEJAN LA INTERFAZ, ES DECIR, LAS VISTAS DEL CLIENTE --------------------------------------- #
 
 def programa():
     estado_menu_principal = True
@@ -316,7 +325,3 @@ def programa():
                     estado_submenu = True
 
 programa()
-
-
-
-"""
