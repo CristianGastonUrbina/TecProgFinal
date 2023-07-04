@@ -1,3 +1,4 @@
 Baja de cliente -> 39234543, Damian, Fortunesky, 1123456789, sarasa 123, 2023-06-30 19:12:51.352116, 2023-06-30 19:13:20.797724, NULL, Inactivo
 Actualizacion de cliente -> 39234543, Damian, Fortunesky, 1123456789, nuevaDireccion, 2023-06-30 19:14:34.868100, 2023-06-30 19:13:20.797724, NULL, Inactivo
 Actualizacion de cliente -> 39234543, Damian, Fortunesky, 1123456789, nuevaDireccion2, 2023-06-30 19:15:04.966165, 2023-06-30 19:13:20.797724, NULL, Inactivo
+Alta de cliente -> 14321345, Damian, Fortunesky, 1123456785, cervantes 123, 2023-07-04 13:42:42.929610, NULL, NULL, Activo 

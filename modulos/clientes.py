@@ -165,7 +165,7 @@ def modificar_datos_cliente(dni, nombre, apellido, telefono, direccion):
 # -------------------------------------------- FUNCIONES QUE MANEJAN LAS SOLICITUDES DE LOS USUARIOS, LOS CONTROLADORES -------------------------------------------- #
 
 
-def pedir_datos_cliente():
+def pedir_datos_alta_cliente():
     flag_dni = True
     while flag_dni:
         try:
@@ -186,34 +186,61 @@ def pedir_datos_cliente():
             flag_dni = False
         except ValueError:
                 print("El DNI debe ser numerico")
-
-    return  alta_cliente(dni, nombre, apellido, telefono, direccion)
+    
+    # Llamar a la función con los datos ingresados
+    alta_cliente(dni, nombre, apellido, telefono, direccion)
    
 
-
-def baja_datos_cliente():
-    dni = input("Ingrese el DNI: ")
+def pedir_datos_baja_cliente():
+    flag_dni = True
+    while flag_dni:
+        try:
+            dni = int(input("Ingrese el DNI: "))
+            flag_dni = False
+        except ValueError:
+            print("El DNI debe ser numérico")
     
     # Llamar a la función "baja_cliente" con los datos ingresados
     baja_cliente(dni)
 
 
-def consultar_estado_cliente():
-    dni = input("Ingrese el DNI: ")
+def pedir_datos_consulta_estado_cliente():
+    flag_dni = True
+    while flag_dni:
+        try:
+            dni = int(input("Ingrese el DNI: "))
+            flag_dni = False
+        except ValueError:
+            print("El DNI debe ser numérico")
     
     # Llamar a la función con los datos ingresados
     consultar_estado_cliente(dni)
 
-def modificar_datos_cliente():
-    dni = input("Ingrese el DNI: ")
+
+def pedir_datos_modificacion_cliente():
+    flag_dni = True
+    while flag_dni:
+        try:
+            dni = int(input("Ingrese el DNI: "))
+            flag_dni = False
+        except ValueError:
+            print("El DNI debe ser numérico")
+    
     nombre = input("Ingrese el nombre: ")
     apellido = input("Ingrese el apellido: ")
-    telefono = input("Ingrese el teléfono: ")
+    
+    flag_telefono = True
+    while flag_telefono:
+        try:
+            telefono = int(input("Ingrese el teléfono: "))
+            flag_telefono = False
+        except ValueError:
+            print("El teléfono debe ser numérico")
+    
     direccion = input("Ingrese la dirección: ")
     
     # Llamar a la función con los datos ingresados
     modificar_datos_cliente(dni, nombre, apellido, telefono, direccion)
-
 
 
 
@@ -311,10 +338,10 @@ def programa():
                 mostrar_mensaje_error()
             else:
                 ops_clientes = {
-                    1: pedir_datos_cliente,
-                    2: baja_datos_cliente,
-                    3: consultar_estado_cliente,
-                    4: modificar_datos_cliente,
+                    1: pedir_datos_alta_cliente,
+                    2: pedir_datos_baja_cliente,
+                    3: pedir_datos_consulta_estado_cliente,
+                    4: pedir_datos_modificacion_cliente,
                     5: Salir
                 }
 
