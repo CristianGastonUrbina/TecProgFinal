@@ -1,4 +1,6 @@
 from datetime import datetime
+import os
+
 
 # ---------------------------------------------------------- FUNCIONES QUE MANEJAN EL MODELO DE DATOS ---------------------------------------------------------- #
 
@@ -246,6 +248,7 @@ def pedir_datos_modificacion_cliente():
 
 
 
+
 # ------------------------------------------------------------------- ALERTAS  DE LAS VISTAS ------------------------------------------------------------------- #
 
 def mostrar_menu_principal():
@@ -298,9 +301,82 @@ def Salir():
     print("      Hasta luego!     ")
     print("                       ")
 
+def limpiar_consola():
+    # Diferentes comandos para limpiar la consola en distintos sistemas operativos
+    comandos_limpiar = {
+        'posix': 'clear',  # Linux y macOS
+        'nt': 'cls'  # Windows
+    }
+
+    # Obtener el comando correspondiente al sistema operativo actual
+    comando = comandos_limpiar.get(os.name)
+
+    # Si no se encuentra el comando correspondiente, se imprime un mensaje
+    if comando is None:
+        print("No se pudo limpiar la consola. Por favor, borra manualmente.")
+
+    # Ejecutar el comando para limpiar la consola
+    os.system(comando)
+
 
 # ---------------------------------------------------- FUNCIONES QUE MANEJAN LA INTERFAZ, ES DECIR, LAS VISTAS DEL CLIENTE --------------------------------------- #
 
+def programa():
+    estado_menu_principal = True
+
+    while estado_menu_principal:
+        
+        if estado_menu_principal:
+            mostrar_menu_principal()        
+        try:
+            opcion = int(input("Elige el numero de opción deseada: "))
+            estado_menu_principal = False
+        except ValueError:
+            mostrar_mensaje_error()
+            continue
+
+        if opcion == 1:
+            estado_submenu_clientes = True
+
+            while estado_submenu_clientes:
+                limpiar_consola()
+                submenu_clientes()
+
+                try:
+                    opcion_submenu_clientes = int(input("Elige el número de opción deseada: "))
+                    estado_submenu_clientes = False 
+                except ValueError:
+                    print("Por favor, ingresa un número válido.")
+                    continue
+                
+                if opcion_submenu_clientes == 1:
+                    pedir_datos_alta_cliente()
+                elif opcion_submenu_clientes == 2:
+                    pedir_datos_baja_cliente()
+                elif opcion_submenu_clientes == 3:
+                    pedir_datos_consulta_estado_cliente()
+                elif opcion_submenu_clientes == 4:
+                    pedir_datos_modificacion_cliente()
+                elif opcion_submenu_clientes == 5:
+                    estado_submenu_clientes = False
+                else:
+                    print("Opción inválida. Por favor, elige una opción válida.")
+        elif opcion == 2:
+            # Código para el submenú de libros
+            pass
+        elif opcion == 3:
+            # Código para el submenú de préstamos
+            pass
+        elif opcion == 4:
+            estado_menu_principal = False
+        else:
+            print("Opción inválida. Por favor, elige una opción válida.")
+
+programa()
+
+
+
+"""
 def programa():
     estado_menu_principal = True
 
@@ -354,3 +430,4 @@ def programa():
                     estado_submenu = True
 
 programa()
+"""
