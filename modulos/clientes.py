@@ -204,6 +204,7 @@ def pedir_datos_baja_cliente():
     baja_cliente(dni)
 
 
+
 def pedir_datos_consulta_estado_cliente():
     flag_dni = True
     while flag_dni:
@@ -214,7 +215,7 @@ def pedir_datos_consulta_estado_cliente():
             print("El DNI debe ser numérico")
     
     # Llamar a la función con los datos ingresados
-    consultar_estado_cliente(dni)
+    print(consultar_estado_cliente(dni))
 
 
 def pedir_datos_modificacion_cliente():
@@ -240,7 +241,8 @@ def pedir_datos_modificacion_cliente():
     direccion = input("Ingrese la dirección: ")
     
     # Llamar a la función con los datos ingresados
-    modificar_datos_cliente(dni, nombre, apellido, telefono, direccion)
+    # modificar_datos_cliente(dni, nombre, apellido, telefono, direccion)
+    print(modificar_datos_cliente(dni, nombre, apellido, telefono, direccion))
 
 
 
@@ -269,7 +271,7 @@ def submenu_clientes():
     print("║ 2. Baja Cliente                     ║")
     print("║ 3. Consultar estado del cliente     ║")
     print("║ 4. Actualizar Datos                 ║")
-    print("║ 7. Salir                            ║")
+    print("║ 5. Salir                            ║")
     print("╚═════════════════════════════════════╝")
     print("                                       ")
 
@@ -327,7 +329,7 @@ def programa():
                 mensaje_dato_no_encontrado()
                 estado_menu_principal = True
         
-        # Aca comienza la gestion del submnu
+        # Aca comienza la gestion del submenu
         estado_submenu = True
 
         while estado_submenu:
@@ -345,8 +347,8 @@ def programa():
                     5: Salir
                 }
 
-                if opcion in ops_clientes:
-                    ops_clientes[opcion]()                
+                if opcion_submenu_clientes in ops_clientes:
+                    ops_clientes[opcion_submenu_clientes]()                         
                 else:
                     mensaje_dato_no_encontrado()
                     estado_submenu = True
